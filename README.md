@@ -30,6 +30,56 @@ Este projeto busca:
 
 ---
 
+## 🌱 Estrutura de Desenvolvimento (Git)
+
+Branches Principais
+
+main
+Contém apenas a versão final e estável do projeto (entrega).
+
+develop
+Branch de integração contínua, onde todas as funcionalidades consolidadas são reunidas.
+
+feature/*
+Branches de desenvolvimento individual ou de funcionalidades específicas.
+
+## 🔀 Fluxo de Pull Request (PR)
+
+Criar uma branch a partir de develop
+
+git checkout develop
+git checkout -b feature/nome-da-feature
+
+Desenvolver a funcionalidade ou main individual
+
+Realizar commits pequenos e descritivos
+
+Abrir um Pull Request para a branch develop
+
+Revisar o código em grupo
+
+Após aprovação, realizar o merge
+
+❌ Commits diretos na branch main não são permitidos.
+
+## 🧾 Boas Práticas de Commit
+
+Commits frequentes
+
+Mensagens claras e objetivas
+
+Exemplos
+
+feat: implementa leitura do CSV
+
+feat: adiciona busca sequencial
+
+feat: cria main individual para testes
+
+fix: corrige erro de leitura do arquivo
+
+docs: atualiza README
+
 ## 🧪 Fases do Projeto
 
 ### 🔹 Fase I — Modelagem, Dataset e Baseline Experimental
@@ -71,6 +121,7 @@ Na segunda fase, o baseline é utilizado para **comparação com uma estrutura o
 
 ---
 
+
 ## 📦 Dataset
 
 Os dados são fornecidos em formato CSV e representam produtos com a seguinte estrutura lógica:
@@ -82,3 +133,4 @@ typedef struct {
     char categoria[31];
     float valor;
 } Produto;
+
