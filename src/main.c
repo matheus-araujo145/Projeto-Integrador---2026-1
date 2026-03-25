@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include "../include/leitor_csv.h"
 
 int main() {
-    printf("Projeto inciado!\n");
+    
+    
     return 0;
 }
