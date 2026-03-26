@@ -6,7 +6,7 @@ int main() {
 
     int quantidade = 0;
 
-    Produto* produtos = ler_csv("data/dataset1.csv", &quantidade);
+    Produto* produtos = ler_csv("../data/dataset1.csv", &quantidade);
 
     if (produtos == NULL) {
         return 1;
