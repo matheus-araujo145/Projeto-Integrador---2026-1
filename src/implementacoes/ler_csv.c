@@ -31,7 +31,7 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
 
     while (fgets(linha, sizeof(linha), arquivo)) {
 
-        //Expandir vetor se necessário
+        //Aumenta se necessário
         if (*quantidade >= capacidade) {
 
             capacidade *= 2;
@@ -66,7 +66,7 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
         //Categoria
         token = strtok(NULL, ","); // strtok obtém o próximo token separado por vírgula
         if (token == NULL) continue;
-        strncpy(p.categoria, token, 30); // strncpy copia até 30 caracteres do token para o campo categoria (evita overflow)
+        strncpy(p.categoria, token, 30); // strncpy copia até 30 caracteres do token para o campo categoria
         p.categoria[30] = '\0';
 
         //Valor
