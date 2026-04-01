@@ -1,0 +1,9 @@
+services:
+  app:
+    image: gcc:15
+    container_name: ed
+    working_dir: /app
+    volumes:
+      - ./:/app
+    tty: true
+    stdin_open: true

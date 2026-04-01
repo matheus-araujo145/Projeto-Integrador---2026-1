@@ -1,0 +1,4 @@
+Para rodar o codigo via docker é necessário que os arquivos: main.c (desenvolvimento.c no caso de debug) e leitor_csv.h estejam na mesma pagina,rodando no terminal:
+gcc desenvolvimento.c ../src/implementacoes/ler_csv.c -o prog && ./prog && rm prog
+
+Ou colocando todos os arquivos na mesma pasta
