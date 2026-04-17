@@ -98,3 +98,4 @@ int main() { //Lê o csv e cria arquvio .txt dos ids selecionados para usar nas 
     free(produtos);
     return 0;
 }
+//Finalizado ajuste de alocação dinâmica de memória
