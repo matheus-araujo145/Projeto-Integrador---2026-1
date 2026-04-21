@@ -1,0 +1,58 @@
+PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL
+
+ESPECIFICACOES DO AMBIENTE
+Processador: i5 14600kf
+Memoria RAM: 32 GB 3200mhz
+Sistema Operacional: Windows 11 25H2
+Compilador: Compilador docker
+
+DADOS GERAIS
+Total de registros: 100003
+Buscas por ciclo: 1000
+Numero de ciclos: 3
+
+DISTRIBUICAO DOS IDS SELECIONADOS
+Elementos do inicio do vetor: 100
+Elementos do meio do vetor: 200
+Elementos do fim do vetor: 300
+Elementos inexistentes: 400
+Total: 1000
+
+DETALHAMENTO DO PROTOCOLO
+O protocolo experimental foi executado conforme as especificacoes:
+- 10.0% dos IDs representam elementos no inicio do vetor
+- 20.0% representam elementos no meio do vetor
+- 30.0% representam elementos no fim do vetor
+- 40.0% sao IDs comprovadamente inexistentes (valores negativos)
+
+Esta distribuicao garante cobertura de todos os cenarios:
+1. Busca em elemento encontrado rapidamente (inicio)
+2. Busca em elemento intermediario
+3. Busca em elemento encontrado lentamente (fim)
+4. Busca em elemento inexistente (pior caso)
+
+RESULTADOS DOS TESTES
+Ciclo | Tempo Total (s) | Tempo Medio (s)
+1 | 0.0966460000 | 0.0000966460
+2 | 0.0978960000 | 0.0000978960
+3 | 0.0913070000 | 0.0000913070
+
+MEDIA | 0.0952830000 | 0.0000952830
+
+ANALISE PRELIMINAR
+
+1. Comportamento Observado:
+Tempo medio por busca: 0.0000952830 segundos
+Algoritmo: Busca Sequencial
+Complexidade teorica: O(n)
+
+2. Relacao entre Tamanho do Vetor e Tempo de Busca:
+Total de registros: 100003
+Buscas realizadas: 1000 por ciclo
+Tempo medio final: 0.0000952830 segundos
+
+3. Limitacoes da Busca Sequencial:
+- Deve percorrer ate n elementos no pior caso
+- Sem dependencia da ordem dos dados
+- Ineficiente para grandes volumes de dados
+- Sera comparada com Tabela Hash na Fase II
