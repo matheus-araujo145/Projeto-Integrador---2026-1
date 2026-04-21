@@ -1,6 +1,7 @@
 #ifndef leitor_csv_h
 #define leitor_csv_h
 
+//Define a estrutura dos produtos
 typedef struct {
     int id;
     char nome[51];
