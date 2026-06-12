@@ -1,29 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "leitor_csv.h"
+
+#include "../src/include/leitor_csv.h"
+#include "../src/include/tabela_hash.h"
 
 int main() {
 
-    int quantidade = 0;
+    int quantidade;
 
     Produto* produtos = ler_csv("../data/dataset1.csv", &quantidade);
 
-    if (produtos == NULL) {
-        return 1;
+    printf("Quantidade: %d\n", quantidade);
+
+    TabelaHash* hash = criar_tabela(quantidade);
+
+    printf("Hash criada!\n");
+
+    for (int i = 0; i < quantidade; i++) {
+        inserir(hash, produtos[i]);
     }
 
-    printf("Total de produtos: %d\n\n", quantidade);
-
-    //Mostrar os 5 primeiros
-    for (int i = 0; i < quantidade && i < 5; i++) {
-
-        printf("%d | %s | %s | %.2f\n",
-               produtos[i].id,
-               produtos[i].nome,
-               produtos[i].categoria,
-               produtos[i].valor);
-    }
+    printf("Produtos inseridos!\n");
+    printf("Colisoes: %d\n", hash->colisoes);
 
     free(produtos);
+    liberar_tabela(hash);
+
     return 0;
 }
