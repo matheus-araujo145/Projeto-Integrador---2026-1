@@ -19,14 +19,17 @@ int main() { //Analise de dados e construção inicial do relatório
         return 1;
     }
 
-    printf("PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL\n\n");
+    //Cria tabela hash
+    TabelaHash* hash = criar_tabela(quantidade);
 
+    printf("PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL\n\n");
     printf("Total de registros carregados: %d\n\n", quantidade);
 
     // Tenta carregar os IDs do arquivo
     int* ids_busca = NULL;
     int num_ids = 0;
 
+    
     if (!carregar_ids_busca(&ids_busca, &num_ids, "ids_selecionados.txt")) {
 
         // Arquivo não existe, gera novos IDs
