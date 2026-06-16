@@ -22,6 +22,18 @@ int main() { //Analise de dados e construção inicial do relatório
     //Cria tabela hash
     TabelaHash* hash = criar_tabela(quantidade);
 
+    //Insere os produtos na tabela hash
+    for (int i = 0; i < quantidade; i++) {
+
+        inserir(hash, produtos[i]);
+    }
+
+    //Informa quantidade de colisoes
+    printf("Tabela Hash carregada.\n");
+    printf("Colisoes registradas: %d\n", hash->colisoes);
+
+    //Protocolo experimental - Tabela Hash vs Busca Sequencial
+
     printf("PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL\n\n");
     printf("Total de registros carregados: %d\n\n", quantidade);
 
