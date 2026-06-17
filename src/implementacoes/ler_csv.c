@@ -25,6 +25,7 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
 
     *quantidade = 0;
     char linha[256];
+    int registros_invalidos = 0;
 
     //Pular cabeçalho
     fgets(linha, sizeof(linha), arquivo);
@@ -57,11 +58,21 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
         if (token == NULL) continue;
         p.id = atoi(token);
 
+        if (p.id <= 0) {
+            registros_invalidos++;
+            continue;
+        }
+
         //Nome
         token = strtok(NULL, ","); // strtok continua dividindo, usando NULL para processar a string anterior
         if (token == NULL) continue;
         strncpy(p.nome, token, 50); // strncpy copia até 50 caracteres do token para o campo nome (evita overflow)
         p.nome[50] = '\0';
+
+        if (strlen(p.nome) == 0) {
+            registros_invalidos++;
+            continue;
+        }
 
         //Categoria
         token = strtok(NULL, ","); // strtok obtém o próximo token separado por vírgula
@@ -69,12 +80,21 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
         strncpy(p.categoria, token, 30); // strncpy copia até 30 caracteres do token para o campo categoria
         p.categoria[30] = '\0';
 
+        if (strlen(p.categoria) == 0) {
+            printf("Registro %d ignorado: categoria vazia.\n", p.id);
+            continue;
+        }
+
         //Valor
         token = strtok(NULL, ",");
         if (token == NULL) continue;
-        p.valor = atof(token);
+            p.valor = atof(token);
 
-        
+        if (p.valor < 0) {
+            printf("Registro %d ignorado: valor invalido.\n", p.id);
+            continue;
+        }
+
         p.nome[strcspn(p.nome, "\n")] = '\0'; // strcspn encontra a posição do caractere '\n' em p.nome e substitui por '\0' para remover quebra
 
         p.categoria[strcspn(p.categoria, "\n")] = '\0'; // strcspn encontra a posição do caractere '\n' em p.categoria e substitui por '\0' para remover quebra
@@ -82,6 +102,9 @@ Produto* ler_csv(const char* nome_arquivo, int* quantidade) {
         produtos[*quantidade] = p;
         (*quantidade)++;
     }
+    printf("\nVALIDACAO DOS DADOS\n");
+    printf("Registros validos: %d\n", *quantidade);
+    printf("Registros invalidos: %d\n", registros_invalidos);
 
     fclose(arquivo);
     return produtos;
