@@ -5,6 +5,7 @@
 #include "./include/tempo.h"
 #include "./include/experimento.h"
 #include "./include/relatorio.h"
+#include "./include/tabela_hash.h"
 
 int main() { //Analise de dados e construção inicial do relatório
 
@@ -22,7 +23,19 @@ int main() { //Analise de dados e construção inicial do relatório
     //Cria tabela hash
     TabelaHash* hash = criar_tabela(quantidade);
 
-    printf("PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL\n\n");
+    //Insere os produtos na tabela hash
+    for (int i = 0; i < quantidade; i++) {
+
+        inserir(hash, produtos[i]);
+    }
+
+    //Informa quantidade de colisoes
+    printf("Tabela Hash carregada.\n");
+    printf("Colisoes registradas: %d\n", hash->colisoes);
+
+    //Protocolo experimental - Tabela Hash vs Busca Sequencial
+
+    printf("PROTOCOLO EXPERIMENTAL - BUSCA SEQUENCIAL vs TABELA HASH\n\n");
     printf("Total de registros carregados: %d\n\n", quantidade);
 
     // Tenta carregar os IDs do arquivo
@@ -55,47 +68,105 @@ int main() { //Analise de dados e construção inicial do relatório
 
     // Executar 3 ciclos do protocolo experimental
     int num_ciclos = 3;
-    double tempos[3];
-    double tempo_total_geral = 0.0;
+
+    double tempos_seq[3];
+    double tempos_hash[3];
+
+    double tempo_total_seq = 0.0;
+    double tempo_total_hash = 0.0;
 
     printf("Executando protocolo experimental...\n\n");
 
     for (int ciclo = 0; ciclo < num_ciclos; ciclo++) {
 
         printf("Ciclo %d em andamento...\n", ciclo + 1);
-        tempos[ciclo] = executar_protocolo_experimental(produtos, quantidade, ids_busca, num_ids);
-        tempo_total_geral += tempos[ciclo];
+        
+        //busca sequencial
+        tempos_seq[ciclo] = executar_protocolo_experimental(
+            produtos,
+            quantidade,
+            ids_busca,
+            num_ids
+        );
+        //busca tabela hash
+        tempos_hash[ciclo] = executar_protocolo_hash(
+            hash,
+            ids_busca,
+            num_ids
+        );
+
+        tempo_total_seq += tempos_seq[ciclo];
+        tempo_total_hash += tempos_hash[ciclo];
     }
 
-    printf("\n\nRESULTADOS DOS TESTES\n");
+    // Apresentar resultados e análise dos dados
+    printf("\n\nRESULTADOS DOS TESTES\n\n");
+    printf("BUSCA SEQUENCIAL\n");
     printf("Ciclo | Tempo Total (s) | Tempo Medio (s)\n");
 
     for (int i = 0; i < num_ciclos; i++) {
 
-        double tempo_medio = tempos[i] / num_ids;
-        printf("%d | %.10f | %.10f\n", i + 1, tempos[i], tempo_medio);
+        double tempo_medio = tempos_seq[i] / num_ids;
+        printf("%d | %.10f | %.10f\n", i + 1, tempos_seq[i], tempo_medio);
     }
 
-    double tempo_medio_geral = tempo_total_geral / (num_ciclos * num_ids);
-    printf("\nMedia | %.10f | %.10f\n\n", tempo_total_geral / num_ciclos, tempo_medio_geral);
+    double tempo_medio_seq = tempo_total_seq / (num_ciclos * num_ids);
+
+    printf("\nMedia | %.10f | %.10f\n\n",
+        tempo_total_seq / num_ciclos,
+        tempo_medio_seq);
+
+
+    printf("TABELA HASH\n");
+    printf("Ciclo | Tempo Total (s) | Tempo Medio (s)\n");
+
+    for (int i = 0; i < num_ciclos; i++) {
+
+        double tempo_medio = tempos_hash[i] / num_ids;
+        printf("%d | %.10f | %.10f\n", i + 1, tempos_hash[i], tempo_medio);
+    }
+
+    double tempo_medio_hash = tempo_total_hash / (num_ciclos * num_ids);
+
+    printf("\nMedia | %.10f | %.10f\n\n",
+        tempo_total_hash / num_ciclos,
+        tempo_medio_hash);
 
     printf("ANALISE DE DADOS\n\n");
 
-    printf("1. Comportamento Observado:\n");
-    printf("Tempo medio por busca: %.10f segundos\n", tempo_medio_geral);
-    printf("Algoritmo: Busca Sequencial\n");
-    printf("Complexidade do algoritmo: O(n)\n\n");
+    printf("1. Busca Sequencial:\n");
+    printf("Tempo medio por busca: %.10f segundos\n", tempo_medio_seq);
+    printf("Complexidade teorica: O(n)\n\n");
 
-    printf("2. Relacao entre Tamanho do Vetor e Tempo de Busca:\n");
+    printf("2. Tabela Hash:\n");
+    printf("Tempo medio por busca: %.10f segundos\n", tempo_medio_hash);
+    printf("Complexidade teorica: O(1)\n");
+    printf("Numero total de colisoes: %d\n\n", hash->colisoes);
+
+    printf("3. Comparacao entre os algoritmos:\n");
     printf("Total de registros: %d\n", quantidade);
-    printf("Buscas realizadas: %d por ciclo\n", num_ids);
-    printf("Tempo medio final: %.10f segundos\n\n", tempo_medio_geral);
+    printf("Buscas realizadas por ciclo: %d\n\n", num_ids);
 
-    printf("3. Limitacoes da Busca Sequencial:\n");
-    printf("- Deve percorrer ate n elementos no pior caso\n");
-    printf("- Sem dependencia da ordem dos dados\n");
-    printf("- Ineficiente para grandes volumes de dados\n");
-    printf("- Sera comparada com Tabela Hash na Fase II\n\n");
+    printf("Busca Sequencial\n");
+    printf("- Tempo medio: %.10f segundos\n", tempo_medio_seq);
+    printf("- Complexidade: O(n)\n\n");
+
+    printf("Tabela Hash\n");
+    printf("- Tempo medio: %.10f segundos\n", tempo_medio_hash);
+    printf("- Complexidade: O(1)\n");
+    printf("- Colisoes registradas: %d\n\n", hash->colisoes);
+
+    printf("4. Observacoes experimentais:\n");
+
+    if (tempo_medio_hash < tempo_medio_seq) {
+        printf("- A Tabela Hash apresentou melhor desempenho medio nas buscas.\n");
+    } else {
+        printf("- A Busca Sequencial apresentou desempenho semelhante ou superior neste experimento.\n");
+    }
+
+    printf("- A funcao hash utilizada registrou %d colisoes.\n", hash->colisoes);
+    printf("- Colisoes podem aumentar o tempo de busca na Tabela Hash.\n");
+    printf("- A Busca Sequencial possui desempenho linear e depende da posicao do elemento no vetor.\n\n");
 
     // Calcular distribuicao dos IDs
     int ids_inicio, ids_meio, ids_fim, ids_inexistentes;
@@ -132,11 +203,23 @@ int main() { //Analise de dados e construção inicial do relatório
     ids_inexistentes = num_ids - (ids_inicio + ids_meio + ids_fim);
 
     // Salvar relatorio em arquivo
-    salvar_relatorio(quantidade, tempos, num_ciclos, num_ids, ids_inicio, ids_meio, ids_fim, ids_inexistentes);
+    salvar_relatorio(
+    quantidade,
+    tempos_seq,
+    tempos_hash,
+    hash->colisoes,
+    num_ciclos,
+    num_ids,
+    ids_inicio,
+    ids_meio,
+    ids_fim,
+    ids_inexistentes
+    );
 
     printf("\n");
 
     // Liberar memoria
+    liberar_tabela(hash);
     free(produtos);
     free(ids_busca);
 

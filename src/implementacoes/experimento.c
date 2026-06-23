@@ -142,3 +142,16 @@ double executar_protocolo_experimental(Produto* produtos, int quantidade, int* i
     double tempo_total = calcular_tempo_decorrido(tempo_inicial);
     return tempo_total;
 }
+
+double executar_protocolo_hash(TabelaHash *hash,int *ids_busca,int num_ids){
+
+    clock_t tempo_inicial = obter_tempo_inicial();
+
+    for (int i = 0; i < num_ids; i++) {
+        buscar(hash, ids_busca[i]);
+    }
+
+    double tempo_total = calcular_tempo_decorrido(tempo_inicial);
+
+    return tempo_total;
+}
