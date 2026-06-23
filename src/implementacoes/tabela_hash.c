@@ -1,6 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
-#include "tabela_hash.h"
+#include "../include/tabela_hash.h"
 
 //função dada para a tabela hash
 int funcao_hash(int id, int tamanho) {

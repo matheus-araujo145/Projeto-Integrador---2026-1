@@ -5,6 +5,7 @@
 #include "./include/tempo.h"
 #include "./include/experimento.h"
 #include "./include/relatorio.h"
+#include "./include/tabela_hash.h"
 
 int main() { //Analise de dados e construção inicial do relatório
 
@@ -133,32 +134,39 @@ int main() { //Analise de dados e construção inicial do relatório
 
     printf("ANALISE DE DADOS\n\n");
 
-    printf("1. Comportamento Observado:\n");
-    printf("Tempo medio por busca (Busca Sequencial): %.10f segundos\n", tempo_medio_seq);
-    printf("Tempo medio por busca (Tabela Hash): %.10f segundos\n", tempo_medio_hash);
+    printf("1. Busca Sequencial:\n");
+    printf("Tempo medio por busca: %.10f segundos\n", tempo_medio_seq);
+    printf("Complexidade teorica: O(n)\n\n");
+
+    printf("2. Tabela Hash:\n");
+    printf("Tempo medio por busca: %.10f segundos\n", tempo_medio_hash);
+    printf("Complexidade teorica: O(1)\n");
     printf("Numero total de colisoes: %d\n\n", hash->colisoes);
 
-    printf("2. Relacao entre Tamanho do Vetor e Tempo de Busca:\n");
+    printf("3. Comparacao entre os algoritmos:\n");
     printf("Total de registros: %d\n", quantidade);
-    printf("Buscas realizadas: %d por ciclo\n", num_ids);
-    printf("Tempo medio final Busca Sequencial: %.10f segundos\n", tempo_medio_seq);
-    printf("Tempo medio final Tabela Hash: %.10f segundos\n\n", tempo_medio_hash);
+    printf("Buscas realizadas por ciclo: %d\n\n", num_ids);
 
-    printf("3. Comparacao entre os Algoritmos:\n");
     printf("Busca Sequencial\n");
-    printf("- Complexidade teorica: O(n)\n");
-    printf("- Percorre os elementos sequencialmente\n");
-    printf("- Pior caso: percorre todo o vetor\n\n");
+    printf("- Tempo medio: %.10f segundos\n", tempo_medio_seq);
+    printf("- Complexidade: O(n)\n\n");
 
     printf("Tabela Hash\n");
-    printf("- Complexidade teorica: O(1)\n");
-    printf("- Utiliza funcao hash para localizar os elementos\n");
-    printf("- Desempenho pode ser afetado por colisoes\n\n");
+    printf("- Tempo medio: %.10f segundos\n", tempo_medio_hash);
+    printf("- Complexidade: O(1)\n");
+    printf("- Colisoes registradas: %d\n\n", hash->colisoes);
 
-    printf("4. Analise Experimental:\n");
-    printf("- A Busca Sequencial apresentou tempo medio de %.10f segundos\n", tempo_medio_seq);
-    printf("- A Tabela Hash apresentou tempo medio de %.10f segundos\n", tempo_medio_hash);
-    printf("- Foram registradas %d colisoes durante o carregamento da tabela\n\n", hash->colisoes);
+    printf("4. Observacoes experimentais:\n");
+
+    if (tempo_medio_hash < tempo_medio_seq) {
+        printf("- A Tabela Hash apresentou melhor desempenho medio nas buscas.\n");
+    } else {
+        printf("- A Busca Sequencial apresentou desempenho semelhante ou superior neste experimento.\n");
+    }
+
+    printf("- A funcao hash utilizada registrou %d colisoes.\n", hash->colisoes);
+    printf("- Colisoes podem aumentar o tempo de busca na Tabela Hash.\n");
+    printf("- A Busca Sequencial possui desempenho linear e depende da posicao do elemento no vetor.\n\n");
 
     // Calcular distribuicao dos IDs
     int ids_inicio, ids_meio, ids_fim, ids_inexistentes;
